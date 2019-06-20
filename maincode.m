@@ -71,7 +71,7 @@ for i = 0:(angle-1)
         %Kalman gain
         K=(Pkp*H')*inv((H*Pkp*H')+R);
         %measurement state
-        Y=C*Xm+Zk;
+        Y=(C*Xm)+Zk;
         %kalman state
         Xk=Xkp+K*(Y-H*Xkp);
         Pk=(I-K*H)*Pkp;
