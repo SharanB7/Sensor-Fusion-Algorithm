@@ -48,7 +48,7 @@ mData
 um = 1;       
 im = 1;
 K = 1;
-Xkm = [1;1];
+Xm = [1;1];
 % Covarience matrix(r) is calculated
 R = [0.0086 0;0 0.16556];
 Qk = 1e-5;
@@ -63,7 +63,7 @@ for i = 0:(angle-1)
     for a = 1+(20*(i)):20*(i+1)
         um = mData(2,a);
         im = mData(3,a);
-        Xkm = [um;im];
+        Xm = [um;im];
         
         %New state
         Xkp=A*X_est+B*Uk+Wk;
