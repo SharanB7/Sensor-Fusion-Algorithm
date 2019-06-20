@@ -36,41 +36,52 @@ if rem(a,60) == 0
     a/60
 end
 end
-% Readings are printed
+A=[1];
+B=[0];
+C=[1 1];
+Uk=[0];
+Wk=[0];
+H=[1; 1]
+Zk=[0];
+I=[1 0;0 1]
 mData
 um = 1;       
 im = 1;
-k = 1;
-y = [1;1];
+K = 1;
+Xkm = [1;1];
 % Covarience matrix(r) is calculated
-r = [0.0086 0;0 0.16556];
-h = [1;1];
-q = 1e-5;
-x_kal = 1;
-p_kal = 1;
+R = [0.0086 0;0 0.16556];
+Qk = 1e-5;
+Xk = 1;
+Pk = 1;
 % Estimated distance can be anything because we apply Kalman filter 20
 % times at each position. So the distance converges to the actual value.
-x_est = 15;
-p_est = 1+q ;
+X_est = 15;
+P_est = 1+Qk ;
 for i = 0:(angle-1)
     % Kalman filter is applied 20 times
     for a = 1+(20*(i)):20*(i+1)
         um = mData(2,a);
         im = mData(3,a);
-        y = [um;im];
-        % Kalman gain is calculated
-        k = (p_est*h')*(inv(((h*p_est)*h')+r));
-        % Kalman distance and Process covarience matrix are calculated calculated
-        x_kal = x_est+k*(y-h*x_est);
-        p_kal = (1-k*h)*p_est;
-        x_est = x_kal;
-        p_est = p_kal +q;
-        dist(a) = x_kal;
-        err(a) = p_kal;
+        Xkm = [um;im];
+        
+        %New state
+        Xkp=A*X_est+B*Uk+Wk;
+        Pkp=A*P_est*A'+Qk;
+        %Kalman gain
+        K=(Pkp*H)*inv(H*Pkp*H'+R);
+        %measurement state
+        Y=C*Xm+Zk;
+        %kalman state
+        Xk=Xkp+K*(Y-H*Xkp);
+        Pk=(I-K*H)*Pkp;
+        %updating
+        Xkp=Xk;
+        Pkp=Pk;
+        
     end
-    final_x(1,i+1) = x_kal
-    final_p(2,i+1) = p_kal
+    final_x(1,i+1) = Xk
+    final_p(2,i+1) = Pk
     
 end
 polarpattern(1:angle,final_x);
-
