@@ -81,7 +81,7 @@ for i = 0:(angle-1)
         
     end
     final_x(1,i+1) = Xk
-    final_p(2,i+1) = Pk
+    final_p(1,i+1) = Pk
     
 end
 polarpattern(1:angle,final_x);
