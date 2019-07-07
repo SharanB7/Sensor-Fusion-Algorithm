@@ -38,6 +38,7 @@ void loop()
         delayMicroseconds(2);
         digitalWrite(trigPin, HIGH);
         delayMicroseconds(10);
+        digitalWrite(trigPin, LOW);
         duration = pulseIn(echoPin,HIGH);
         usdistance = duration*0.034/2;
         // Calculating distance wrt axis of rotation
